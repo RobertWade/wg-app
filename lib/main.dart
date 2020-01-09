@@ -40,9 +40,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  String _myText = 'Putzplan';
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+
+      if (index == 0) {
+        _myText = 'Putzplan';
+      } else if (index == 1) {
+        _myText = 'Einkaufslist';
+      } else {
+        _myText = 'Finanzen';
+      }
     });
   }
 
@@ -82,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // in the middle of the parent.
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Text('$_selectedIndex')],
+          children: <Widget>[Text(_myText)],
         ),
       ),
     );
