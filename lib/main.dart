@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'screens/shoppinglist.dart';
+import 'screens/finances.dart';
+import 'screens/cleaningplan.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,18 +34,14 @@ class _MyHomePageState extends State<MyHomePage>
   List<Widget> _tabList = [
     Container(
       child: Center(
-        child: Text('Clean'),
+        child: CleaningPlan(),
       ),
     ),
     Container(
-      child: Center(
-        child: Text('Shoppinglist'),
-      ),
+      child: Center(child: ShoppingList()),
     ),
     Container(
-      child: Center(
-        child: Text('Finance'),
-      ),
+      child: FinanceList(),
     )
   ];
 
