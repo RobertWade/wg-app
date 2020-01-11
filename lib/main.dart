@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wg_app/screens/shoppinglist_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,24 +7,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.amber,
       ),
-      home: MyHomePage(title: 'WG-Planer'),
-      // routes: {
-      //   '/': (context) => MyHomePage(),
-      //   '/shoppinglist': (context) => ShoppingList(),
-      // },
+      home: MyHomePage(title: 'Roommate'),
     );
   }
 }
@@ -38,36 +24,62 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
-  String _myText = 'Putzplan';
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  int _currentIndex = 0;
 
-      if (index == 0) {
-        _myText = 'Putzplan';
-      } else if (index == 1) {
-        _myText = 'Einkaufslist';
-      } else {
-        _myText = 'Finanzen';
-      }
-    });
+  List<Widget> _tabList = [
+    Container(
+      child: Center(
+        child: Text('Clean'),
+      ),
+    ),
+    Container(
+      child: Center(
+        child: Text('Shoppinglist'),
+      ),
+    ),
+    Container(
+      child: Center(
+        child: Text('Finance'),
+      ),
+    )
+  ];
+
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(vsync: this, length: _tabList.length);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(
-          widget.title,
-          style: TextStyle(color: Colors.black),
-        ),
         backgroundColor: Colors.white,
+        title: Text(widget.title),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: _tabList,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (currentIndex) {
+          setState(() {
+            _currentIndex = currentIndex;
+          });
+
+          _tabController.animateTo(_currentIndex);
+        },
         items: [
           BottomNavigationBarItem(
             icon: new Icon(Icons.event_note),
@@ -82,17 +94,6 @@ class _MyHomePageState extends State<MyHomePage> {
             title: Text('Finanzen'),
           )
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Text(_myText)],
-        ),
       ),
     );
   }
